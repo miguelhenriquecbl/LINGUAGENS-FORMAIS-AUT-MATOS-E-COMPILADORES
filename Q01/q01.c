@@ -67,7 +67,7 @@ int main() {
             unsigned char ch = (unsigned char) buf[i];
 
             if (ch == '\n' || ch == '\r' || isspace(ch)) continue;
-            if (is_not_digit_1_9(ch) && ch != '.' && ch != '+' && ch != '-' && ch != 'E' && ch != 'e') { ok = 0; printf("eu n sou letra valida\n"); break; }
+            if (is_not_digit_1_9(ch) && ch != '.' && ch != '+' && ch != '-' && ch != 'E' && ch != 'e') { ok = 0; break; }
 
             e0 = step(e0, (char)ch);
             if (e0 == DEAD) { ok = 0; break;}
@@ -81,6 +81,6 @@ int main() {
 }
 
 
-int is_not_digit_1_9 (char c) {
+int is_not_digit_0_9 (char c) {
     return (c != '0' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5' && c != '6' && c != '7' && c != '8' && c != '9');
 }
