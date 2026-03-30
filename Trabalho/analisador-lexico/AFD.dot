@@ -1,0 +1,113 @@
+digraph AFD {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    { rank=same; inicio; q0}
+
+    { rank=same; q1; q2; q4; q5; q6; q7; }
+
+    { rank=same; qTOKEN_EOF; qTOKEN_ERROR; }
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q4 [label="q4"];
+    q5 [label="q5"];
+    q6 [label="q6"];
+    q7 [label="q7"];
+    q8 [label="q8"];
+
+    /* estados finais — círculo duplo */
+    node [shape=doublecircle];
+
+    /* Palavras reservadas, Identificador e Tipos Números  */
+    qID_KW [label="ID/KW"];
+    qNUM_INT [label="NUM_INT"];
+    qNUM_REAL [label="NUM_REAL"];
+
+    /* Operadores relacionais */
+    qOP_EQ [label="OP_EQ"]; /* = */
+    qOP_NE [label="OP_NE"]; /* <> */
+    qOP_LT [label="OP_LT"]; /* < */
+    qOP_LE [label="OP_LE"]; /* <= */
+    qOP_GT [label="OP_GT"]; /* > */
+    qOP_GE [label="OP_GE"]; /* >= */
+
+    /* Operadores aritméticos */
+    qOP_AD [label="OP_AD"]; /* + */
+    qOP_MIN [label="OP_MIN"]; /* - */
+    qOP_MUL [label="OP_MUL"]; /* * */
+    qOP_DIV [label="OP_DIV"]; /* / */
+    qOP_ASS [label="OP_ASS"]; /* := */
+
+    /* Símbolos */
+    qSMB_SEM [label="SMB_SEM"]; /* ; */
+    qSMB_COM [label="SMB_COM"]; /* , */
+    qSMB_OPA [label="SMB_OPA"]; /* ( */
+    qSMB_CPA [label="SMB_CPA"]; /* ) */
+    qSMB_COL [label="SMB_COL"]; /* : */
+    qSMB_DOT [label="SMB_DOT"]; /* . */
+
+    /* Especiais */
+    qTOKEN_EOF [shape=doublecircle label="TOKEN_EOF"]; /* Fim do arquivo */
+    qTOKEN_ERROR [shape=doublecircle label="TOKEN_ERROR"]; /* Erro léxico */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> qTOKEN_ERROR [label="outro\n(char inválido)"];
+    q0 -> qTOKEN_EOF [label="EOF"];
+
+    q0 -> q1 [label="[a-z][A-Z]"];
+    q1 -> q1 [label="[a-z][A-Z][0-9]"];
+    q1 -> qID_KW [label="outro\n(lookahead)"];
+
+    q0 -> q2 [label="[0-9]"];
+    q2 -> q2 [label="[0-9]"];
+    q2 -> qNUM_INT [label="outro\n(lookahead)"];
+
+    q2 -> q3 [label=". (ponto)"]; /* ponto depois de número */
+    q3 -> q3 [label="[0-9]"];
+    q3 -> qNUM_REAL [label="outro\n(lookahead)"];
+
+    q0 -> q4 [label=": (dois pontos)"]; 
+    q4 -> qOP_ASS [label="= (igual)"]; 
+    q4 -> qSMB_COL [label="outro\n(lookahead)"]; 
+
+    q0 -> q5 [label="< (menor que)"]; 
+    q5 -> qOP_NE [label="> (maior que)"]; 
+    q5 -> qOP_LE [label="= (igual)"]; 
+    q5 -> qOP_LT [label="outro\n(lookahead)"]; 
+
+    q0 -> q6 [label="> (maior que)"]; 
+    q6 -> qOP_GE [label="= (igual)"]; 
+    q6 -> qOP_GT [label="outro\n(lookahead)"]; 
+
+    q0 -> q7 [label="{ (abre comentário)"]; 
+    q7 -> q7 [label="qualquer char\n(exceto '}' e EOF)"];
+    q7 -> q0 [label="} (fecha comentário)\n(sem gerar token)"];
+
+    q0 -> q8 [label="= + - * / ; , ( ) .", minlen=3]; 
+    q8 -> qOP_EQ [label="= (igual)"]; 
+    q8 -> qOP_AD [label="+ (adição)"]; 
+    q8 -> qOP_MIN [label="- (subtração)"]; 
+    q8 -> qOP_MUL [label="* (multiplicação)"]; 
+    q8 -> qOP_DIV [label="/ (divisão)"]; 
+
+    q8 -> qSMB_SEM [label="; (ponto e vírgula)"]; 
+    q8 -> qSMB_COM [label=", (vírgula)"]; 
+    q8 -> qSMB_OPA [label="( (abre parêntese)"]; 
+    q8 -> qSMB_CPA [label=") (fecha parêntese)"]; 
+    q8 -> qSMB_DOT [label=". (ponto)"]; /* ponto sozinho */
+}
