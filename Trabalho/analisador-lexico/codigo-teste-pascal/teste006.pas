@@ -1,8 +1,8 @@
-{ Teste 006 - Programa com erro: comentario nao fechado }
+{ Teste 006 - Erro: comentario nao fechado com numeros com E }
 program ErroComentario;
 var
-    x : integer;
+    x : real;
 begin
-    x := 10;
+    x := 1.5E+3;
     { este comentario nunca e fechado...
 end.

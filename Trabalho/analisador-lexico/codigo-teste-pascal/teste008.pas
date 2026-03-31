@@ -1,11 +1,10 @@
-{ Teste 008 - Programa com caracteres invalidos variados }
-program ErroVariados;
+{ Teste 008 - Erro: multiplos erros com novas regras }
+program MultiploErros;
 var
     x : integer;
+    y : real;
 begin
-    x := 10;
-    if x # 5 then
-        x := x + 1
-    else
-        x := x ! 2
+    x := +10 @ -2;
+    y := 1.5E# + 2.0E$;
+    x := x + +1
 end.
