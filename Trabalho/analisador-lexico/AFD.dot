@@ -127,6 +127,7 @@ digraph AFD {
     q8 -> q10 [label="[0-9]"]
     q9 -> q10 [label="[0-9]"]
     q10 -> q10 [label="[0-9]"]
+    q8 -> qTOKEN_ERROR [label="outro\n(lookahead)"]; 
     q9 -> qTOKEN_ERROR [label="outro\n(lookahead)"]; 
     q10 -> qNUM_REAL [label="outro\n(lookahead)"]; 
 }
