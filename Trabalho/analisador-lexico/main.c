@@ -106,11 +106,98 @@ void ignoraComentario(int linhaInicio, int colInicio) {
     temErro = 1;
 }
 
+void reconheceExpoente(char c, int i, Token *t) {
+    t->lexema[i++] = 'e';
+
+    c = proximoChar();
+
+    if (c == '+' || c == '-') {
+        t->lexema[i++] = c;
+        c = proximoChar();
+    } 
+    
+    if (isdigit(c)) {
+        t->lexema[i++] = c;
+        while ((c = proximoChar()) != EOF && isdigit(c)) {
+            t->lexema[i++] = c;
+        }
+
+        t->lexema[i] = '\0';
+        if (c != EOF) devolverChar(c);
+
+        t->type = NUM_REAL;
+    } else {
+        t->lexema[i] = '\0';
+        if (c != EOF) devolverChar(c);
+
+        fprintf(arqErr, "ERRO linha %d, coluna %d: expoente invalido '%c'\n", linha, col, c);
+        temErro = 1;
+        t->type = TOKEN_ERROR;
+    }
+}
+
+void ehLetra(char c, Token *t) {
+    int i = 0;
+
+    t->lexema[i++] = tolower(c);
+
+    while ((c = proximoChar()) != EOF && (isalpha(c) || isdigit(c))) {
+        t->lexema[i++] = tolower(c);
+    }
+
+    t->lexema[i] = '\0';
+
+    if (c != EOF) devolverChar(c);
+
+    int idx = buscaTS(t->lexema);
+    if (idx != -1) {
+        char *nome = pegarTokenNome(idx);
+        t->type = tokenPorNome(nome); 
+
+    } else {
+        t->type = ID;
+        inserirTS(t->lexema, "ID");
+    }
+}
+
+void ehNumero(char c, int i, Token *t) {
+
+    t->lexema[i++] = c;
+    
+    while ((c = proximoChar()) != EOF && isdigit(c)) {
+        t->lexema[i++] = c;
+    }
+
+    if (c == '.') {
+        t->lexema[i++] = '.';
+        while ((c = proximoChar()) != EOF && isdigit(c)) {
+            t->lexema[i++] = c;
+        }
+
+        if (tolower(c) == 'e'){
+            reconheceExpoente(c, i, t);
+        } else {
+            t->lexema[i] = '\0';
+            if (c != EOF) devolverChar(c);
+
+            t->type = NUM_REAL;
+        }
+
+    } else if (tolower(c) == 'e'){
+        reconheceExpoente(c, i, t);
+    } else {
+        t->lexema[i] = '\0';
+        if (c != EOF) devolverChar(c);
+
+        t->type = NUM_INT;
+    }
+}
 
 Token proximoToken() {
     Token t;
     int c;
     int prox;
+    int i = 0;
 
     while (1) {
         c = proximoChar();
@@ -137,56 +224,12 @@ Token proximoToken() {
     t.col = col - 1;
 
     if (isalpha(c)) {
-        int i = 0;
-
-        t.lexema[i++] = tolower(c);
-
-        while ((c = proximoChar()) != EOF && (isalpha(c) || isdigit(c))) {
-            t.lexema[i++] = tolower(c);
-        }
-
-        t.lexema[i] = '\0';
-
-        if (c != EOF) devolverChar(c);
-
-        int idx = buscaTS(t.lexema);
-        if (idx != -1) {
-            char *nome = pegarTokenNome(idx);
-            t.type = tokenPorNome(nome); 
-
-        } else {
-            t.type = ID;
-            inserirTS(t.lexema, "ID");
-        }
-
+        ehLetra(c, &t);
         return t;
     }
 
     if (isdigit(c)) {
-        int i = 0;
-        t.lexema[i++] = c;
-        
-        while ((c = proximoChar()) != EOF && isdigit(c)) {
-            t.lexema[i++] = c;
-        }
-
-        if (c == '.') {
-            t.lexema[i++] = '.';
-            while ((c = proximoChar()) != EOF && isdigit(c)) {
-                t.lexema[i++] = c;
-            }
-
-            t.lexema[i] = '\0';
-            if (c != EOF) devolverChar(c);
-
-            t.type = NUM_REAL;
-        } else {
-            t.lexema[i] = '\0';
-            if (c != EOF) devolverChar(c);
-
-            t.type = NUM_INT;
-        }
-
+        ehNumero(c, i, &t);
         return t;        
     }
 
@@ -195,8 +238,6 @@ Token proximoToken() {
 
     switch (c) {
         case '=': t.type = OP_EQ; break;
-        case '+': t.type = OP_AD; break;
-        case '-': t.type = OP_MIN; break;
         case '*': t.type = OP_MUL; break;
         case '/': t.type = OP_DIV; break;
         case ';': t.type = SMB_SEM; break;
@@ -204,6 +245,26 @@ Token proximoToken() {
         case '(': t.type = SMB_OPA; break;
         case ')': t.type = SMB_CPA; break;
         case '.': t.type = SMB_DOT; break;
+                
+        case '+': 
+            prox = proximoChar();
+            if (isdigit(prox)) {
+                ehNumero(prox, ++i, &t);
+                return t;
+            } else {
+                t.type = OP_AD; 
+            }
+            break;
+
+        case '-': 
+            prox = proximoChar();
+            if (isdigit(prox)) {
+                ehNumero(prox, ++i, &t);
+                return t;
+            } else {
+                t.type = OP_MIN; 
+            }
+            break;
         
         case '<': 
             prox = proximoChar();
@@ -263,9 +324,9 @@ int main (int argc, char *argv[]) {
     }
 
     fonte = fopen(argv[1], "r");
-    arqLex = fopen("resultado/saidaLex-teste008.lex", "w");
-    arqTS = fopen("resultado/saidaTS-teste008.ts", "w");
-    arqErr = fopen("resultado/saidaErro-teste008.err", "w");
+    arqLex = fopen("resultado/saidaLex-teste.lex", "w");
+    arqTS = fopen("resultado/saidaTS-teste.ts", "w");
+    arqErr = fopen("resultado/saidaErro-teste.err", "w");
 
     if (!fonte) {
         printf("ERRO: Arquivo nao encontrado\n");
