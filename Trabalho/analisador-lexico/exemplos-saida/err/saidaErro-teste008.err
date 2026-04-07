@@ -1,2 +1,8 @@
-ERRO linha 9, coluna 11: caractere invalido '#'
-ERRO linha 15, coluna 17: caractere invalido '!'
+ERRO linha 9, coluna 15: caractere invalido '@'
+ERRO linha 10, coluna 14: expoente invalido '#'
+ERRO linha 10, coluna 15: caractere invalido '#'
+ERRO linha 10, coluna 22: expoente invalido '$'
+ERRO linha 10, coluna 23: caractere invalido '$'
+
+
+

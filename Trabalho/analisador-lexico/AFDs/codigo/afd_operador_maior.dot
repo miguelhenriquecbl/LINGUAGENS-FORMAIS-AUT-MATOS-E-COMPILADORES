@@ -1,0 +1,32 @@
+digraph afd_operador_maior {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q6 [label="q6"];
+
+    /* estados finais — círculo duplo */
+    node [shape=doublecircle];
+
+    /* Operadores relacionais */
+    qOP_GT [label="OP_GT"]; /* > */
+    qOP_GE [label="OP_GE"]; /* >= */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> q6 [label="> (maior que)"]; 
+    q6 -> qOP_GE [label="= (igual)"]; 
+    q6 -> qOP_GT [label="outro\n(lookahead)"]; 
+
+}

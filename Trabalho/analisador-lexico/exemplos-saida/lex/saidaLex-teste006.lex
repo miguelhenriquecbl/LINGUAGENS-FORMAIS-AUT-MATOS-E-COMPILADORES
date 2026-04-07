@@ -4,10 +4,12 @@
 <KW_VAR, var> 3 1
 <ID, x> 5 5
 <SMB_COL, :> 5 7
-<KW_INTEGER, integer> 5 9
-<SMB_SEM, ;> 5 16
+<KW_REAL, real> 5 9
+<SMB_SEM, ;> 5 13
 <KW_BEGIN, begin> 6 1
 <ID, x> 8 5
 <OP_ASS, :=> 8 7
-<NUM_INT, 10> 8 10
-<SMB_SEM, ;> 8 12
+<NUM_REAL, 1.5e+3> 8 10
+<SMB_SEM, ;> 8 16
+
+

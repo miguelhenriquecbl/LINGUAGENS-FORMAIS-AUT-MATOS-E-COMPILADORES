@@ -1,0 +1,45 @@
+digraph afd_tokens_simples {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados finais — círculo duplo */
+    node [shape=doublecircle];
+
+    /* Operadores relacionais */
+    qOP_EQ [label="OP_EQ"]; /* = */
+
+    /* Operadores aritméticos */
+    qOP_MUL [label="OP_MUL"]; /* * */
+    qOP_DIV [label="OP_DIV"]; /* / */
+
+    /* Símbolos */
+    qSMB_SEM [label="SMB_SEM"]; /* ; */
+    qSMB_COM [label="SMB_COM"]; /* , */
+    qSMB_OPA [label="SMB_OPA"]; /* ( */
+    qSMB_CPA [label="SMB_CPA"]; /* ) */
+    qSMB_DOT [label="SMB_DOT"]; /* . */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> qOP_EQ [label="= (igual)", minlen=3]; 
+    q0 -> qOP_MUL [label="* (multiplicação)", minlen=3]; 
+    q0 -> qOP_DIV [label="/ (divisão)", minlen=3]; 
+
+    q0 -> qSMB_SEM [label="; (ponto e vírgula)", minlen=3]; 
+    q0 -> qSMB_COM [label=", (vírgula)", minlen=3]; 
+    q0 -> qSMB_OPA [label="( (abre parêntese)", minlen=3]; 
+    q0 -> qSMB_CPA [label=") (fecha parêntese)", minlen=3]; 
+    q0 -> qSMB_DOT [label=". (ponto)", minlen=3]; /* ponto sozinho */
+
+}

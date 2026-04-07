@@ -14,3 +14,7 @@ do                   KW_DO
 comentarios          ID
 x                    ID
 y                    ID
+
+
+
+

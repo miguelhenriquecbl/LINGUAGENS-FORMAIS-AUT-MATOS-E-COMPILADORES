@@ -13,3 +13,7 @@ while                KW_WHILE
 do                   KW_DO
 erroarroba           ID
 x                    ID
+y                    ID
+
+
+

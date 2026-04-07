@@ -1,0 +1,34 @@
+digraph afd_operador_atribuicao {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q4 [label="q4"];
+
+    /* estados finais — círculo duplo */
+    node [shape=doublecircle];
+
+    /* Operadores aritméticos */
+    qOP_ASS [label="OP_ASS"]; /* := */
+
+    /* Símbolos */
+    qSMB_COL [label="SMB_COL"]; /* : */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> q4 [label=": (dois pontos)"]; 
+    q4 -> qOP_ASS [label="= (igual)"]; 
+    q4 -> qSMB_COL [label="outro\n(lookahead)"]; 
+
+}

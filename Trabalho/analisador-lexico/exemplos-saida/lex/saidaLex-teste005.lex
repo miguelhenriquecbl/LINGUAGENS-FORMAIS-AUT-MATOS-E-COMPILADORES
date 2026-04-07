@@ -6,16 +6,21 @@
 <SMB_COL, :> 5 7
 <KW_INTEGER, integer> 5 9
 <SMB_SEM, ;> 5 16
-<KW_BEGIN, begin> 6 1
-<ID, x> 8 5
-<OP_ASS, :=> 8 7
-<NUM_INT, 10> 8 10
-<NUM_INT, 2> 8 15
-<SMB_SEM, ;> 8 16
+<ID, y> 6 5
+<SMB_COL, :> 6 7
+<KW_REAL, real> 6 9
+<SMB_SEM, ;> 6 13
+<KW_BEGIN, begin> 7 1
 <ID, x> 9 5
 <OP_ASS, :=> 9 7
-<ID, x> 9 10
-<OP_AD, +> 9 12
-<NUM_INT, 1> 9 14
-<KW_END, end> 11 1
-<SMB_DOT, .> 11 4
+<NUM_INT, +10> 9 10
+<NUM_INT, -2> 9 16
+<SMB_SEM, ;> 9 18
+<ID, y> 10 5
+<OP_ASS, :=> 10 7
+<NUM_REAL, 1.5e+2> 10 10
+<KW_END, end> 12 1
+<SMB_DOT, .> 12 4
+
+
+

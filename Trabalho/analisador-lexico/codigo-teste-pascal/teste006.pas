@@ -6,3 +6,6 @@ begin
     x := 1.5E+3;
     { este comentario nunca e fechado...
 end.
+
+
+

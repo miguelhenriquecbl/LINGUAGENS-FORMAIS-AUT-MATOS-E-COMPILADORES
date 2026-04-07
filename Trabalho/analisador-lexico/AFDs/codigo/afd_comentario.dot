@@ -1,0 +1,29 @@
+digraph afd_comentario {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q7 [label="q7"];
+
+    /* Especiais */
+    qTOKEN_EOF [shape=doublecircle label="TOKEN_EOF"]; /* Fim do arquivo */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> q7 [label="{ (abre comentário)"]; 
+    q7 -> q7 [label="qualquer char\n(exceto '}' e EOF)"];
+    q7 -> q0 [label="} (fecha comentário)\n(sem gerar token)"];
+    q7 -> qTOKEN_EOF [label="EOF\n(comentário não fechado)"];
+
+}

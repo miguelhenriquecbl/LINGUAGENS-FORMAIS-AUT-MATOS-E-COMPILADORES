@@ -1,0 +1,23 @@
+digraph afd_erro_lexico {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* Especiais */
+    qTOKEN_ERROR [shape=doublecircle label="TOKEN_ERROR"]; /* Erro léxico */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> qTOKEN_ERROR [label="outro\n(char inválido)"];
+    
+}

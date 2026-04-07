@@ -22,55 +22,93 @@ Implementação de um analisador léxico para a linguagem **MicroPascal (µ-Pasc
 
 ```
 projeto/
-├── main.c                            ← analisador léxico (AFD + geração de arquivos)
-├── token.h                           ← enum TokenType e struct Token
+├── main.c                            ← ponto de entrada, abre arquivos e executa o analisador
+├── lexer.h                           ← declarações das funções do analisador léxico
+├── lexer.c                           ← implementação do analisador léxico (AFD)
+├── token.h                           ← enum TokenType, struct Token e MapaToken
 ├── symtable.h                        ← declarações da Tabela de Símbolos
 ├── symtable.c                        ← implementação da Tabela de Símbolos
-├── AFD.dot                           ← diagrama do AFD em Graphviz (código fonte)
-├── AFD.svg                           ← diagrama do AFD gerado
 ├── README.md                         ← este arquivo
 ├── analisador-lexico.exe             ← executável gerado pelo compilador
 │
+├── AFDs/                             ← diagramas do AFD
+│   ├── codigo/                       ← código fonte Graphviz (.dot)
+│   │   ├── afd_completo.dot
+│   │   ├── afd_tokens_simples.dot
+│   │   ├── afd_comentario.dot
+│   │   ├── afd_operador_atribuicao.dot
+│   │   ├── afd_operador_menor.dot
+│   │   ├── afd_operador_maior.dot
+│   │   ├── afd_numeros_e_sinais.dot
+│   │   ├── afd_identificadores.dot
+│   │   ├── afd_fim_arquivo_eof.dot
+│   │   └── afd_erro_lexico.dot
+│   ├── png/                          ← imagens PNG geradas
+│   │   ├── afd_completo.png
+│   │   ├── afd_tokens_simples.png
+│   │   ├── afd_comentario.png
+│   │   ├── afd_operador_atribuicao.png
+│   │   ├── afd_operador_menor.png
+│   │   ├── afd_operador_maior.png
+│   │   ├── afd_numeros_e_sinais.png
+│   │   ├── afd_identificadores.png
+│   │   ├── afd_fim_arquivo_eof.png
+│   │   └── afd_erro_lexico.png
+│   └── svg/                          ← imagens SVG geradas (vetorial)
+│       ├── afd_completo.svg
+│       ├── afd_tokens_simples.svg
+│       ├── afd_comentario.svg
+│       ├── afd_operador_atribuicao.svg
+│       ├── afd_operador_menor.svg
+│       ├── afd_operador_maior.svg
+│       ├── afd_numeros_e_sinais.svg
+│       ├── afd_identificadores.svg
+│       ├── afd_fim_arquivo_eof.svg
+│       └── afd_erro_lexico.svg
+│
 ├── codigo-teste-pascal/              ← programas de teste em MicroPascal
-│   ├── teste001.pas                  ← correto — exemplo do professor
-│   ├── teste002.pas                  ← correto — operadores relacionais
-│   ├── teste003.pas                  ← correto — comentários
-│   ├── teste004.pas                  ← correto — case-insensitive
-│   ├── teste005.pas                  ← erro — caractere inválido '@'
+│   ├── teste001.pas                  ← correto — exemplo do professor com sinais e E
+│   ├── teste002.pas                  ← correto — operadores relacionais com sinais
+│   ├── teste003.pas                  ← correto — comentários com sinais e E
+│   ├── teste004.pas                  ← correto — case-insensitive com E e e
+│   ├── teste005.pas                  ← erro — caractere inválido '@' com sinais
 │   ├── teste006.pas                  ← erro — comentário não fechado
-│   ├── teste007.pas                  ← erro — múltiplos erros '@' '%' '$'
-│   └── teste008.pas                  ← erro — caracteres inválidos '#' '!'
+│   ├── teste007.pas                  ← erro — E sem dígito depois
+│   └── teste008.pas                  ← erro — múltiplos erros com novas regras
 │
 ├── exemplos-saida/                   ← saídas pré-geradas de cada teste
-│   ├── saidaLex-teste001.lex         
-│   ├── saidaLex-teste002.lex         
-│   ├── saidaLex-teste003.lex         
-│   ├── saidaLex-teste004.lex         
-│   ├── saidaLex-teste005.lex         
-│   ├── saidaLex-teste006.lex         
-│   ├── saidaLex-teste007.lex         
-│   ├── saidaLex-teste008.lex         
-│   ├── saidaTS-teste001.ts           
-│   ├── saidaTS-teste002.ts           
-│   ├── saidaTS-teste003.ts           
-│   ├── saidaTS-teste004.ts           
-│   ├── saidaTS-teste005.ts           
-│   ├── saidaTS-teste006.ts           
-│   ├── saidaTS-teste007.ts           
-│   ├── saidaTS-teste008.ts           
-│   ├── saidaErro-teste001.err        
-│   ├── saidaErro-teste002.err        
-│   ├── saidaErro-teste003.err        
-│   ├── saidaErro-teste004.err        
-│   ├── saidaErro-teste005.err        
-│   ├── saidaErro-teste006.err        
-│   ├── saidaErro-teste007.err        
-│   └── saidaErro-teste008.err        
+│   ├── lex/
+│   │   ├── saidaLex-teste001.lex
+│   │   ├── saidaLex-teste002.lex
+│   │   ├── saidaLex-teste003.lex
+│   │   ├── saidaLex-teste004.lex
+│   │   ├── saidaLex-teste005.lex
+│   │   ├── saidaLex-teste006.lex
+│   │   ├── saidaLex-teste007.lex
+│   │   └── saidaLex-teste008.lex
+│   ├── ts/
+│   │   ├── saidaTS-teste001.ts
+│   │   ├── saidaTS-teste002.ts
+│   │   ├── saidaTS-teste003.ts
+│   │   ├── saidaTS-teste004.ts
+│   │   ├── saidaTS-teste005.ts
+│   │   ├── saidaTS-teste006.ts
+│   │   ├── saidaTS-teste007.ts
+│   │   └── saidaTS-teste008.ts
+│   └── err/
+│       ├── saidaErro-teste001.err
+│       ├── saidaErro-teste002.err
+│       ├── saidaErro-teste003.err
+│       ├── saidaErro-teste004.err
+│       ├── saidaErro-teste005.err
+│       ├── saidaErro-teste006.err
+│       ├── saidaErro-teste007.err
+│       └── saidaErro-teste008.err
 │
 └── resultado/                        ← gerado ao rodar o analisador
-    ├── saidaLex.lex                  ← tokens reconhecidos
-    ├── saidaTS.ts                    ← tabela de símbolos
-    └── saidaErro.err                 ← erros léxicos encontrados
+    ├── saidaLex-teste.lex            ← tokens reconhecidos
+    ├── saidaTS-teste.ts              ← tabela de símbolos
+    └── saidaErro-teste.err           ← erros léxicos encontrados
 ```
 
 ---
@@ -92,21 +130,26 @@ gcc --version
 Abra o terminal na pasta do projeto e execute:
 
 ```bash
-gcc main.c symtable.c -o a
+gcc main.c lexer.c symtable.c -o analisador-lexico
 ```
 
 ---
 
 ## Como Executar
 
+**Rodar com um arquivo específico:**
 ```bash
-./a codigo-teste-pascal/teste001.pas
+./analisador-lexico codigo-teste-pascal/teste001.pas
 ```
 
-Os arquivos de saída serão gerados automaticamente na pasta `resultado/`:
-- `resultado/saidaLex.lex` — tokens reconhecidos
-- `resultado/saidaTS.ts` — tabela de símbolos
-- `resultado/saidaErro.err` — erros léxicos (vazio se não houver erros)
+**Rodar todos os 8 testes de uma vez:**
+
+No `main.c` existe um modo de execução em lote — basta descomentar o bloco do loop `for` e comentar as linhas de arquivo único. Os arquivos serão gerados automaticamente na pasta `resultado/`:
+```
+resultado/saidaLex-teste001.lex ... resultado/saidaLex-teste008.lex
+resultado/saidaTS-teste001.ts   ... resultado/saidaTS-teste008.ts
+resultado/saidaErro-teste001.err ... resultado/saidaErro-teste008.err
+```
 
 ---
 
@@ -117,10 +160,30 @@ Os arquivos de saída serão gerados automaticamente na pasta `resultado/`:
 | Token | Descrição | Exemplos |
 |---|---|---|
 | ID | Sequência iniciada por letra `[a-zA-Z]` seguida de letras e/ou dígitos `[a-zA-Z0-9]*` | `x`, `contador`, `valor1` |
-| NUM_INT | Sequência de dígitos `[0-9]+` | `10`, `42`, `100` |
-| NUM_REAL | Dígitos seguidos de `.` e mais dígitos `[0-9]+.[0-9]+` | `1.5`, `3.14`, `2.5` |
+| NUM_INT | Sequência de dígitos `[0-9]+`, com sinal opcional `+` ou `-` | `10`, `+42`, `-100` |
+| NUM_REAL | Inteiro com parte decimal `.` e/ou fator de escala `E` | `1.5`, `10E5`, `1.5E+3`, `-2.0E-2` |
 
 > A linguagem é **case-insensitive** — `Exemplo`, `EXEMPLO` e `exemplo` são o mesmo identificador, sempre armazenado em minúsculo na Tabela de Símbolos.
+
+#### Formatos válidos de NUM_REAL
+
+| Formato | Exemplo |
+|---|---|
+| Inteiro com ponto decimal | `1.5`, `3.14` |
+| Inteiro com fator de escala | `10E5`, `10e5` |
+| Inteiro com fator de escala e sinal | `10E+5`, `10E-5` |
+| Real com fator de escala | `1.5E10`, `1.5e10` |
+| Real com fator de escala e sinal | `1.5E+10`, `2.0E-3` |
+
+#### Sinal nos números
+
+O sinal `+` ou `-` antes de um número é reconhecido como parte do número quando aparece diretamente antes de dígitos. Caso contrário é reconhecido como operador `OP_AD` ou `OP_MIN`.
+
+| Entrada | Tokens gerados |
+|---|---|
+| `+10` | `NUM_INT "+10"` |
+| `-1.5` | `NUM_REAL "-1.5"` |
+| `x + 10` | `ID "x"`, `OP_AD "+"`, `NUM_INT "10"` |
 
 ### Palavras Reservadas
 | Token | Lexema |
@@ -170,6 +233,7 @@ Os arquivos de saída serão gerados automaticamente na pasta `resultado/`:
 |---|---|
 | Caractere inválido | `@`, `%`, `$`, `#`, `!` |
 | Comentário não fechado | `{ comentário sem fechar` + EOF |
+| Expoente inválido | `1.5E`, `10E+`, `10E-` |
 
 Para cada erro, o analisador registra o **tipo do erro**, a **linha** e a **coluna** no arquivo `saidaErro.err`.
 
@@ -177,7 +241,7 @@ Para cada erro, o analisador registra o **tipo do erro**, a **linha** e a **colu
 
 ## Formato dos Arquivos de Saída
 
-### `saidaLex.lex`
+### `saidaLex-teste.lex`
 ```
 <KW_PROGRAM, program> 1 1
 <ID, exemplo> 1 9
@@ -185,7 +249,7 @@ Para cada erro, o analisador registra o **tipo do erro**, a **linha** e a **colu
 ```
 Formato: `<TIPO_TOKEN, lexema> linha coluna`
 
-### `saidaTS.ts`
+### `saidaTS-teste.ts`
 ```
 LEXEMA               TIPO
 ------               ----
@@ -194,10 +258,11 @@ exemplo              ID
 x                    ID
 ```
 
-### `saidaErro.err`
+### `saidaErro-teste.err`
 ```
 ERRO linha 5, coluna 9: caractere invalido '@'
 ERRO linha 8, coluna 3: comentario nao fechado
+ERRO linha 12, coluna 7: expoente invalido
 ```
 
 ---
@@ -209,47 +274,36 @@ A Tabela de Símbolos é inicializada com todas as **11 palavras reservadas** da
 - Não permite duplicatas
 - A linguagem é **case-insensitive** — `Program`, `PROGRAM` e `program` são o mesmo lexema
 - Apenas identificadores e palavras reservadas são armazenados
+- Números, operadores e símbolos **não** são armazenados na TS
 
 ---
 
 ## AFD — Autômato Finito Determinístico
 
-O diagrama do AFD está disponível nos arquivos `AFD.dot` e `afd.svg`.
+O AFD foi dividido em diagramas menores para facilitar a leitura e explicação. Todos os arquivos estão na pasta `AFDs/`.
+
+| Arquivo | Descrição |
+|---|---|
+| `afd_completo` | visão geral de todos os estados e transições |
+| `afd_tokens_simples` | tokens de um único caractere: `= * / ; , ( ) .` |
+| `afd_comentario` | reconhecimento de comentários `{ }` e erro de EOF |
+| `afd_operador_atribuicao` | distinção entre `:` e `:=` |
+| `afd_operador_menor` | distinção entre `<`, `<=` e `<>` |
+| `afd_operador_maior` | distinção entre `>` e `>=` |
+| `afd_numeros_e_sinais` | `NUM_INT`, `NUM_REAL`, fator de escala `E` e sinais `+` `-` |
+| `afd_identificadores` | identificadores e palavras reservadas |
+| `afd_fim_arquivo_eof` | reconhecimento do fim de arquivo |
+| `afd_erro_lexico` | `TOKEN_ERROR` e conceito de lookahead |
+
+Para gerar o PNG ou SVG a partir do `.dot` (requer Graphviz instalado):
 
 Para gerar o SVG a partir do `.dot` (requer Graphviz instalado):
+
 ```bash
-dot -Tsvg AFD.dot -o afd.svg
+Exemplos: 
+
+dot -Tsvg .\AFDs\codigo\afd_completo.dot -o .\AFDs\png\afd_completo.svg
+dot -Tpng .\AFDs\codigo\afd_completo.dot -o .\AFDs\png\afd_completo.png
 ```
 
 Download do Graphviz: https://graphviz.org/download/
-
----
-
-## Exemplo de Execução
-
-Entrada (`teste001.pas`):
-```pascal
-program Exemplo;
-var
-   x : integer;
-begin
-   x := 10
-end.
-```
-
-Saída (`saidaLex.lex`):
-```
-<KW_PROGRAM, program> 1 1
-<ID, exemplo> 1 9
-<SMB_SEM, ;> 1 16
-<KW_VAR, var> 3 1
-<ID, x> 4 4
-<SMB_COL, :> 4 6
-<KW_INTEGER, integer> 4 8
-<KW_BEGIN, begin> 5 1
-<ID, x> 6 4
-<OP_ASS, :=> 6 6
-<NUM_INT, 10> 6 9
-<KW_END, end> 7 1
-<SMB_DOT, .> 7 4
-```

@@ -81,5 +81,7 @@ char *pegarTokenNome (int idx) {
 void liberaTS() {
     free(tabela);
     tabela = NULL;
+    quantidade = 0;
+    capacidade = 20;
 }
 

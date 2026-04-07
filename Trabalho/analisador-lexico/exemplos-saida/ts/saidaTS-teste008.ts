@@ -11,5 +11,9 @@ then                 KW_THEN
 else                 KW_ELSE
 while                KW_WHILE
 do                   KW_DO
-errovariados         ID
+multiploerros        ID
 x                    ID
+y                    ID
+
+
+

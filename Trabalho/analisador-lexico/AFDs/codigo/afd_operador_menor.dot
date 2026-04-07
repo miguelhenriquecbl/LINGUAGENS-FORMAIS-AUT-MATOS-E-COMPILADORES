@@ -1,0 +1,33 @@
+digraph afd_operador_menor {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q5 [label="q5"];
+
+    /* estados finais — círculo duplo */
+    node [shape=doublecircle];
+
+    /* Operadores relacionais */
+    qOP_NE [label="OP_NE"]; /* <> */
+    qOP_LT [label="OP_LT"]; /* < */
+    qOP_LE [label="OP_LE"]; /* <= */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> q5 [label="< (menor que)"]; 
+    q5 -> qOP_NE [label="> (maior que)"]; 
+    q5 -> qOP_LE [label="= (igual)"]; 
+    q5 -> qOP_LT [label="outro\n(lookahead)"]; 
+}

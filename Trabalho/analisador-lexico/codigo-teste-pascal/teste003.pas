@@ -17,3 +17,6 @@ begin
         x := x - +1  { loop ate -10 }
     end
 end.
+
+
+

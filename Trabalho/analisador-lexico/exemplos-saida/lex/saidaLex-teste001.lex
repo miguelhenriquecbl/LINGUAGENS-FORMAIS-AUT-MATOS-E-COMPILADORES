@@ -15,20 +15,16 @@
 <KW_BEGIN, begin> 7 1
 <ID, x> 9 5
 <OP_ASS, :=> 9 7
-<NUM_INT, 10> 9 10
-<SMB_SEM, ;> 9 12
+<NUM_REAL, +1.0> 9 10
+<SMB_SEM, ;> 9 14
 <ID, y> 10 5
 <OP_ASS, :=> 10 7
-<NUM_INT, 20> 10 10
-<SMB_SEM, ;> 10 12
+<NUM_INT, -20> 10 10
+<SMB_SEM, ;> 10 13
 <ID, z> 11 5
 <OP_ASS, :=> 11 7
-<ID, x> 11 10
-<OP_AD, +> 11 12
-<ID, y> 11 14
-<OP_MUL, *> 11 16
-<NUM_REAL, 2.5> 11 18
-<SMB_SEM, ;> 11 21
+<NUM_REAL, 1.5e+2> 11 10
+<SMB_SEM, ;> 11 16
 <KW_IF, if> 12 5
 <ID, x> 12 8
 <OP_GT, >> 12 10
@@ -56,8 +52,8 @@
 <OP_ASS, :=> 23 11
 <ID, z> 23 14
 <OP_MUL, *> 23 16
-<NUM_REAL, 1.5> 23 18
-<SMB_SEM, ;> 23 21
+<NUM_REAL, 1.5e-1> 23 18
+<SMB_SEM, ;> 23 24
 <ID, x> 24 9
 <OP_ASS, :=> 24 11
 <ID, x> 24 14
@@ -66,3 +62,7 @@
 <KW_END, end> 26 5
 <KW_END, end> 28 1
 <SMB_DOT, .> 28 4
+
+
+
+

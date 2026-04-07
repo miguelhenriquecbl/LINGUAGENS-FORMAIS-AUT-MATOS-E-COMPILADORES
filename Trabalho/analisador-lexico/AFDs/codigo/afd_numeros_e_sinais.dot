@@ -1,0 +1,66 @@
+digraph afd_numeros_e_sinais {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q8 [label="q8"];
+    q9 [label="q9"];
+    q10 [label="q10"];
+    q11 [label="q11"];
+    q12 [label="q12"];
+
+    /* estados finais — círculo duplo */
+    node [shape=doublecircle];
+
+    /* Palavras reservadas, Identificador e Tipos Números  */
+    qNUM_INT [label="NUM_INT"];
+    qNUM_REAL [label="NUM_REAL"];
+
+    /* Operadores aritméticos */
+    qOP_AD [label="OP_AD"]; /* + */
+    qOP_MIN [label="OP_MIN"]; /* - */
+
+    /* Especiais */
+    qTOKEN_ERROR [shape=doublecircle label="TOKEN_ERROR"]; /* Erro léxico */
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> q2 [label="[0-9]"];
+    q2 -> q2 [label="[0-9]"];
+    q2 -> q8 [label="Ee"];
+    q2 -> qNUM_INT [label="outro\n(lookahead)"];
+
+    q2 -> q3 [label=". (ponto)"]; /* ponto depois de número */
+    q3 -> q3 [label="[0-9]"];
+    q3 -> q8 [label="E e"];
+    q3 -> qNUM_REAL [label="outro\n(lookahead)"];
+
+    q0 -> q11 [label="+ (adição)"]; 
+    q11 -> q2 [label="[0-9]"]; 
+    q11 -> qOP_AD [label="outro\n(lookahead)"]; 
+
+    q0 -> q12 [label="- (subtração)"]; 
+    q12 -> q2 [label="[0-9]"]
+    q12 -> qOP_MIN [label="outro\n(lookahead)"]; 
+
+    q8 -> q9 [label="+ | -\n(sinal)"]
+    q8 -> q10 [label="[0-9]"]
+    q9 -> q10 [label="[0-9]"]
+    q10 -> q10 [label="[0-9]"]
+    q8 -> qTOKEN_ERROR [label="outro\n(lookahead)"]; 
+    q9 -> qTOKEN_ERROR [label="outro\n(lookahead)"]; 
+    q10 -> qNUM_REAL [label="outro\n(lookahead)"]; 
+}

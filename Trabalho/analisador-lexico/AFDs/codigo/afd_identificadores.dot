@@ -1,0 +1,28 @@
+digraph afd_identificadores {
+    rankdir=LR;
+    nodesep=0.4;
+    pad=0.8;
+    node [shape=circle, fontname="Arial"];
+    edge [fontname="Arial", fontsize=16];
+
+    /* estado invisível pra seta de entrada */
+    inicio [shape=none, label=""];
+
+    /* Estado Inicial */
+    q0 [label="q0\ninicial"];
+
+    /* estados intermediários */
+    q1 [label="q1"];
+
+    /* Palavras reservadas, Identificador e Tipos Números  */
+    qID_KW [shape=doublecircle label="ID/KW"];
+
+    /* seta de entrada */
+    inicio -> q0;
+
+    /* q0 -> estados intermediários */
+    q0 -> q1 [label="[a-z][A-Z]"];
+    q1 -> q1 [label="[a-z][A-Z] | [0-9]"];
+    q1 -> qID_KW [label="outro\n(lookahead)"];
+
+}

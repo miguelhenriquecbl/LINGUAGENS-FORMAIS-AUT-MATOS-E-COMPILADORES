@@ -20,3 +20,5 @@ void liberaTS();
 char *pegarTokenNome (int idx);
 
 #endif
+
+

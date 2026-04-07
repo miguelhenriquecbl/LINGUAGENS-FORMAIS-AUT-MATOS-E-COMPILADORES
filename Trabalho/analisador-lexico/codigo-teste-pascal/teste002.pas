@@ -19,3 +19,7 @@ begin
     if a = c then
         c := +0
 end.
+
+
+
+
