@@ -1,4 +1,4 @@
-# Analisador Léxico — MicroPascal (µ-Pascal)
+# Analisador Léxico - MicroPascal (µ-Pascal)
 
 Trabalho prático da disciplina **Linguagens Formais, Autômatos e Compiladores**  
 Universidade Católica de Brasília — 1º semestre de 2026  
