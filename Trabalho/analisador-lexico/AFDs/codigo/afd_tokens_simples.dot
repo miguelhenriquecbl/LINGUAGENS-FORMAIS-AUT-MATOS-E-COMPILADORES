@@ -40,6 +40,6 @@ digraph afd_tokens_simples {
     q0 -> qSMB_COM [label=", (vírgula)", minlen=3]; 
     q0 -> qSMB_OPA [label="( (abre parêntese)", minlen=3]; 
     q0 -> qSMB_CPA [label=") (fecha parêntese)", minlen=3]; 
-    q0 -> qSMB_DOT [label=". (ponto)", minlen=3]; /* ponto sozinho */
+    q0 -> qSMB_DOT [label="\\. (ponto)", minlen=3];
 
 }

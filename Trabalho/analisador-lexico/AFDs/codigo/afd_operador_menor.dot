@@ -29,5 +29,5 @@ digraph afd_operador_menor {
     q0 -> q5 [label="< (menor que)"]; 
     q5 -> qOP_NE [label="> (maior que)"]; 
     q5 -> qOP_LE [label="= (igual)"]; 
-    q5 -> qOP_LT [label="outro\n(lookahead)"]; 
+    q5 -> qOP_LT [label="^= | ^>"];
 }

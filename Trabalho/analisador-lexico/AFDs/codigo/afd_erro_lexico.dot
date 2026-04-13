@@ -18,6 +18,6 @@ digraph afd_erro_lexico {
     inicio -> q0;
 
     /* q0 -> estados intermediários */
-    q0 -> qTOKEN_ERROR [label="outro\n(char inválido)"];
+    q0 -> qTOKEN_ERROR [label="^[a-zA-Z0-9]\n^[0-9] | ^[+-]\n^: | ^< | ^>\n^\\{ | ^\\. | ^=\n^* | ^/ | ^; | ^,\n^( | ^)"];
     
 }

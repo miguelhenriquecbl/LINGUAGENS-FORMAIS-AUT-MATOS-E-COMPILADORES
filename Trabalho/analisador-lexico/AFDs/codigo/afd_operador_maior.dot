@@ -27,6 +27,6 @@ digraph afd_operador_maior {
     /* q0 -> estados intermediários */
     q0 -> q6 [label="> (maior que)"]; 
     q6 -> qOP_GE [label="= (igual)"]; 
-    q6 -> qOP_GT [label="outro\n(lookahead)"]; 
+    q6 -> qOP_GT [label="^="]; 
 
 }

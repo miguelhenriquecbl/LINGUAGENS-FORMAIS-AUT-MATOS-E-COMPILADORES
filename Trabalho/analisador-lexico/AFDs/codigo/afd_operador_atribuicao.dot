@@ -29,6 +29,6 @@ digraph afd_operador_atribuicao {
     /* q0 -> estados intermediários */
     q0 -> q4 [label=": (dois pontos)"]; 
     q4 -> qOP_ASS [label="= (igual)"]; 
-    q4 -> qSMB_COL [label="outro\n(lookahead)"]; 
+   q4 -> qSMB_COL [label="^="]; 
 
 }

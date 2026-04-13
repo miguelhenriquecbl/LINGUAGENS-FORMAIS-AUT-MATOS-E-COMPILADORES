@@ -21,9 +21,9 @@ digraph afd_comentario {
     inicio -> q0;
 
     /* q0 -> estados intermediários */
-    q0 -> q7 [label="{ (abre comentário)"]; 
-    q7 -> q7 [label="qualquer char\n(exceto '}' e EOF)"];
-    q7 -> q0 [label="} (fecha comentário)\n(sem gerar token)"];
+    q0 -> q7 [label="\\{ (abre comentário)"]; 
+    q7 -> q7 [label="^\\} | ^EOF"];
+    q7 -> q0 [label="\\}\n (fecha comentário sem gerar token)"];
     q7 -> qTOKEN_EOF [label="EOF\n(comentário não fechado)"];
 
 }
