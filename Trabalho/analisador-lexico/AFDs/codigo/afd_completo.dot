@@ -75,30 +75,30 @@ digraph afd_completo {
 
     q0 -> q1 [label="[a-z][A-Z]"];
     q1 -> q1 [label="[a-z][A-Z] | [0-9]"];
-    q1 -> qID_KW [label="^[a-zA-Z0-9]"];
+    q1 -> qID_KW [label="^[a-zA-Z0-9]\n(lookahead)"];
 
     q0 -> q2 [label="[0-9]"];
     q2 -> q2 [label="[0-9]"];
     q2 -> q8 [label="Ee"];
-    q2 -> qNUM_INT [label="^[0-9] | ^[Ee] | ^\."];
+    q2 -> qNUM_INT [label="^[0-9] | ^[Ee] | ^\.\n(lookahead)"];
 
     q2 -> q3 [label="\\. (ponto)"];
     q3 -> q3 [label="[0-9]"];
     q3 -> q8 [label="E e"];
-    q3 -> qNUM_REAL [label="^[0-9] | ^[Ee]"];
+    q3 -> qNUM_REAL [label="^[0-9] | ^[Ee]\n(lookahead)"];
 
     q0 -> q4 [label=": (dois pontos)"]; 
     q4 -> qOP_ASS [label="= (igual)"]; 
-    q4 -> qSMB_COL [label="^="]; 
+    q4 -> qSMB_COL [label="^=\n(lookahead)"]; 
 
     q0 -> q5 [label="< (menor que)"]; 
     q5 -> qOP_NE [label="> (maior que)"]; 
     q5 -> qOP_LE [label="= (igual)"]; 
-    q5 -> qOP_LT [label="^= | ^>"];
+    q5 -> qOP_LT [label="^= | ^>\n(lookahead)"];
 
     q0 -> q6 [label="> (maior que)"]; 
     q6 -> qOP_GE [label="= (igual)"]; 
-    q6 -> qOP_GT [label="^="];
+    q6 -> qOP_GT [label="^=\n(lookahead)"];
 
     q0 -> q7 [label="\\{ (abre comentário)"]; 
     q7 -> q7 [label="^\\} | ^EOF"];
@@ -117,17 +117,17 @@ digraph afd_completo {
 
     q0 -> q11 [label="+ (adição)"]; 
     q11 -> q2 [label="[0-9]"]; 
-    q11 -> qOP_AD [label="^[0-9]"];
+    q11 -> qOP_AD [label="^[0-9]\n(lookahead)"];
 
     q0 -> q12 [label="- (subtração)"]; 
     q12 -> q2 [label="[0-9]"]
-    q12 -> qOP_MIN [label="^[0-9]"]
+    q12 -> qOP_MIN [label="^[0-9]\n(lookahead)"]
 
     q8 -> q9 [label="+ | -\n(sinal)"]
     q8 -> q10 [label="[0-9]"]
     q9 -> q10 [label="[0-9]"]
     q10 -> q10 [label="[0-9]"]
-    q8 -> qTOKEN_ERROR [label="^[0-9] | ^[+-]"];
-    q9 -> qTOKEN_ERROR [label="^[0-9]"];
-    q10 -> qNUM_REAL [label="^[0-9]"];
+    q8 -> qTOKEN_ERROR [label="^[0-9] | ^[+-]\n(lookahead)"];
+    q9 -> qTOKEN_ERROR [label="^[0-9]\n(lookahead)"];
+    q10 -> qNUM_REAL [label="^[0-9]\n(lookahead)"];
 }
