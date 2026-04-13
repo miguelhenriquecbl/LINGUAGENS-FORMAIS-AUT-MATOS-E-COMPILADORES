@@ -23,6 +23,6 @@ digraph afd_identificadores {
     /* q0 -> estados intermediários */
     q0 -> q1 [label="[a-z][A-Z]"];
     q1 -> q1 [label="[a-z][A-Z] | [0-9]"];
-    q1 -> qID_KW [label="^[a-zA-Z0-9]"];
+    q1 -> qID_KW [label="^[a-zA-Z0-9]\n(lookahead)"];
 
 }
