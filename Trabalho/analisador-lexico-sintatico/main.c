@@ -5,6 +5,7 @@
 #include "token.h"
 #include "symtable.h"
 #include "lexer.h"
+#include "sintatico.h"
 
 // Verifica o Sistema Operacional antes de compilar
 #ifdef _WIN32
@@ -25,18 +26,14 @@ FILE *arqErr;
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
+    if (argc < 2) {
         printf("Você não passou nenhum arquivo.\n");
         return 1;
     }
 
-    if (CRIAR_PASTA("resultado") == 0)
-    {
+    if (CRIAR_PASTA("resultado") == 0) {
         printf("Pasta 'resultado' criada com sucesso.\n");
-    }
-    else
-    {
+    } else {
         printf("A pasta 'resultado' ja existe ou ocorreu um erro ao criar.\n");
     }
 
@@ -45,56 +42,62 @@ int main(int argc, char *argv[])
     arqTS = fopen("resultado/saidaTS-teste.ts", "w");
     arqErr = fopen("resultado/saidaErro-teste.err", "w");
 
-    if (!fonte)
-    {
-        printf("ERRO: Arquivo nao encontrado\n");
+    if (!fonte) { printf("ERRO: Arquivo nao encontrado\n");
         return 1;
     }
 
-    if (!arqLex)
-    {
+    if (!arqLex) {
         printf("ERRO: Erro ao criar o arquivo saidaLex.lex\n");
         return 1;
     }
 
-    if (!arqTS)
-    {
+    if (!arqTS) {
         printf("ERRO: Erro ao criar o arquivo saidaTS.ts\n");
         return 1;
     }
 
-    if (!arqErr)
-    {
+    if (!arqErr) {
         printf("ERRO: Erro ao criar o arquivo saidaErro.err\n");
         return 1;
     }
 
     inicializaTS();
 
-    Token t;
-    do
-    {
+    TokenVec tv = tokenizar();
 
-        t = proximoToken();
+    if (tv.size == 0 ) {
+        fprintf(stderr, "ERRO: nenhum token gerado.\n");
+        return 1;
+    }
 
-        if (t.type != TOKEN_EOF && t.type != TOKEN_ERROR)
-        {
-            escreveToken(t);
-        }
+    AST *raiz = parse(&tv);
 
-    } while (t.type != TOKEN_EOF);
+    if (!raiz) {
+        fprintf(stderr, "ERRO: AST nula.\n");
+        tv_free(&tv);
+        return 1;
+    }
+
+    // Imprimir a árvore no terminal
+    ast_print(raiz, 0);
+
+    ast_to_dot(raiz, "resultado/saidaAFD-teste.dot");
+    
+    system("dot -Tpng resultado/saidaAFD-teste.dot -o resultado/saidaAFD-teste.png");
+    system("\"C:\\Program Files\\Graphviz\\bin\\dot\" -Tsvg resultado/saidaAFD-teste.dot -o resultado/saidaAFD-teste.svg");
+    printf("Imagens geradas: resultado/saidaAFD-teste.png e resultado/saidaAFD-teste.svg\n");
+
 
     escreverTS(arqTS);
 
-    if (temErro == 1)
-    {
+    if (temErro == 1) {
         printf("Analise concluida com erros. Veja saidaErro.err\n");
-    }
-    else
-    {
+    } else {
         printf("Analise concluida com sucesso!\n");
     }
 
+    ast_free(raiz);
+    tv_free(&tv);
     liberaTS();
 
     fclose(fonte);
