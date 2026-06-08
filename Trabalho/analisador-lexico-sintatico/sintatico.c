@@ -7,6 +7,8 @@
 #include "lexer.h"
 #include "sintatico.h"
 
+extern FILE *arqErr;
+
 static AST *parse_expr(Parser *p);
 
 static int contadorId = 0;
@@ -206,6 +208,8 @@ static void perr(Parser *p) {
         fprintf(stderr, "%d:token nao esperado [%s].\n",
                 t->linha, t->lexema);
     }
+    fflush(arqErr);   
+    fclose(arqErr);
     exit(1);
 }
 

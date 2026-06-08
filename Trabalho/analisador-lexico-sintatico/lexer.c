@@ -111,13 +111,15 @@ void devolverChar(int c)
 void ignoraComentario(int linhaInicio, int colInicio)
 {
     int c;
-
     while ((c = proximoChar()) != EOF)
     {
-        if (c == '}')
+        if (c == '}') 
             return;
+        
     }
 
+    fprintf(arqErr, "ERRO linha %d, coluna %d: comentario nao fechado\n", linhaInicio, colInicio);
+    fflush(arqErr);
     temErro = 1;
 }
 
@@ -245,7 +247,6 @@ Token proximoToken() {
         c = proximoChar();
 
         if (c == EOF) {
-                printf("DEBUG: EOF encontrado, ultimaLinha=%d, linha=%d\n", ultimaLinha, linha);
             t.type = TOKEN_EOF;
             strcpy(t.lexema, "EOF");
             t.linha = ultimaLinha;
