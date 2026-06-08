@@ -8,6 +8,7 @@
 #include "sintatico.h"
 
 extern FILE *arqErr;
+extern FILE *arqTS;
 
 static AST *parse_expr(Parser *p);
 
@@ -210,6 +211,9 @@ static void perr(Parser *p) {
     }
     fflush(arqErr);   
     fclose(arqErr);
+    escreverTS(arqTS);
+    fflush(arqTS);
+    fclose(arqTS);
     exit(1);
 }
 

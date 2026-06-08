@@ -8,6 +8,7 @@
 extern FILE *fonte;
 extern FILE *arqLex;
 extern FILE *arqErr;
+extern FILE *arqTS;
 
 int linha = 1;
 int col = 1;
