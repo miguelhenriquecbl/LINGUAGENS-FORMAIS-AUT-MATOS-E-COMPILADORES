@@ -79,7 +79,8 @@ int main(int argc, char *argv[])
     }
 
     // Imprimir a árvore no terminal
-    ast_print(raiz, 0);
+    // ast_print(raiz, 0);
+    // printf("\n");
 
     ast_to_dot(raiz, "resultado/saidaAFD-teste.dot");
     
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
 
     escreverTS(arqTS);
 
-    if (temErro == 1) {
+    if (temErro) {
         printf("Analise concluida com erros. Veja saidaErro.err\n");
     } else {
         printf("Analise concluida com sucesso!\n");

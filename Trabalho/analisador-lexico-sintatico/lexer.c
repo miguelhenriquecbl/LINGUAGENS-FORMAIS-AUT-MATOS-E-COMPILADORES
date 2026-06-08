@@ -101,8 +101,11 @@ void devolverChar(int c)
 {
     ungetc(c, fonte);
 
-    if (c != '\n')
+    if (c == '\n') {
+        linha--;
+    } else {
         col--;
+    }
 }
 
 void ignoraComentario(int linhaInicio, int colInicio)
@@ -115,7 +118,6 @@ void ignoraComentario(int linhaInicio, int colInicio)
             return;
     }
 
-    fprintf(arqErr, "ERRO linha %d, coluna %d: comentario nao fechado\n", linhaInicio, colInicio);
     temErro = 1;
 }
 
@@ -236,15 +238,18 @@ Token proximoToken() {
     int c;
     int prox;
     int i = 0;
+    int ultimaLinha = linha;   
+    int ultimaCol = col; 
 
     while (1) {
         c = proximoChar();
 
         if (c == EOF) {
+                printf("DEBUG: EOF encontrado, ultimaLinha=%d, linha=%d\n", ultimaLinha, linha);
             t.type = TOKEN_EOF;
             strcpy(t.lexema, "EOF");
-            t.linha = linha;
-            t.col = col;
+            t.linha = ultimaLinha;
+            t.col = ultimaCol;
             return t;
         }
 
@@ -255,6 +260,8 @@ Token proximoToken() {
             continue;
         }
 
+        ultimaLinha = linha;
+        ultimaCol = col - 1;        
         break;
     }
 

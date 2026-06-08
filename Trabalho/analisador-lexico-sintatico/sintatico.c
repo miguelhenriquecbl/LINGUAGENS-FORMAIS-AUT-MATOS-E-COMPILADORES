@@ -20,6 +20,9 @@ TokenVec tokenizar() {
     for (;;) {
         Token t = proximoToken();
 
+        if (t.type != TOKEN_EOF && t.type != TOKEN_ERROR)
+            escreveToken(t);
+
         if (v.size + 1 > v.cap) {
             v.cap = v.cap ? v.cap * 2 : 16;
             v.data = realloc(v.data, v.cap * sizeof(Token));
@@ -32,8 +35,7 @@ TokenVec tokenizar() {
 
         v.data[v.size++] = t;
 
-        if (t.type == TOKEN_EOF)
-            break;
+        if (t.type == TOKEN_EOF) break;
     }
 
     return v;
